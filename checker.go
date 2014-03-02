@@ -12,8 +12,6 @@ type Checker struct {
 	obtained interface{}
 }
 
-// FACTORY ========================================================================================
-
 func newChecker(obtained interface{}) *Checker {
 	return &Checker{
 		obtained: obtained,
@@ -39,29 +37,25 @@ func Check(obtained interface{}, matcher MatcherFactory, args ...interface{}) *C
 	return newChecker(obtained).run(matcher, args...)
 }
 
-// PUBLIC METHODS =================================================================================
-
-func (self *Checker) And(matcher MatcherFactory, args ...interface{}) *Checker {
-	self.negated = false
-	if !self.failed {
-		return self.run(matcher, args...)
+func (chk *Checker) And(matcher MatcherFactory, args ...interface{}) *Checker {
+	chk.negated = false
+	if !chk.failed {
+		return chk.run(matcher, args...)
 	}
-	return self
+	return chk
 }
 
-// PRIVATE METHODS ================================================================================
-
-func (self *Checker) run(matcher MatcherFactory, args ...interface{}) *Checker {
+func (chk *Checker) run(matcher MatcherFactory, args ...interface{}) *Checker {
 	if notMatcher, ok := matcher.(*NotMatcher); ok {
-		self.negated = !self.negated
+		chk.negated = !chk.negated
 		matcher = notMatcher.inner
 	}
 
 	inst := matcher.New(args)
-	if self.negated {
-		self.failed = !self.Actual.ToNot(inst)
+	if chk.negated {
+		chk.failed = !chk.Actual.ToNot(inst)
 	} else {
-		self.failed = !self.Actual.To(inst)
+		chk.failed = !chk.Actual.To(inst)
 	}
-	return self
+	return chk
 }

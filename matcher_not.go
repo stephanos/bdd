@@ -4,7 +4,7 @@ type NotMatcher struct {
 	inner MatcherFactory
 }
 
-func (self *NotMatcher) New(expected []interface{}) Matcher {
+func (nm *NotMatcher) New(expected []interface{}) Matcher {
 	return nil // ignore
 }
 

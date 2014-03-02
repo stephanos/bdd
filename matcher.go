@@ -24,29 +24,23 @@ type MatcherRunner struct {
 	expected []interface{}
 }
 
-// FACTORY ========================================================================================
-
 func newMatcherRunner(info *MatcherInfo, expected []interface{}) *MatcherRunner {
 	return &MatcherRunner{info, expected}
 }
 
-// PUBLIC METHODS =================================================================================
-
-func (self *MatcherInfo) New(expected []interface{}) Matcher {
-	return newMatcherRunner(self, expected)
+func (mi *MatcherInfo) New(expected []interface{}) Matcher {
+	return newMatcherRunner(mi, expected)
 }
 
-func (self *MatcherRunner) Match(actual interface{}) (success bool, message string, err error) {
-	if err := self.validate(self.expected); err != nil {
+func (mi *MatcherRunner) Match(actual interface{}) (success bool, message string, err error) {
+	if err := mi.validate(mi.expected); err != nil {
 		return false, "", err
 	}
-	return self.Matcher(actual, self.expected)
+	return mi.Matcher(actual, mi.expected)
 }
 
-// PRIVATE METHODS ================================================================================
-
-func (self *MatcherInfo) validate(expected []interface{}) error {
-	wantParams := self.Parameters
+func (mi *MatcherInfo) validate(expected []interface{}) error {
+	wantParams := mi.Parameters
 	if wantParams != -1 {
 		haveParams := len(expected)
 		if haveParams != wantParams {
