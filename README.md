@@ -1,7 +1,7 @@
 bdd [![Build Status](https://secure.travis-ci.org/101loops/bdd.png)](https://travis-ci.org/101loops/bdd)
 ======
 
-This Go package to write BDD-style tests.
+Go package to write BDD-style tests.
 
 ### Installation
 `go get github.com/101loops/bdd`
