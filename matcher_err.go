@@ -45,37 +45,3 @@ var ErrorContains MatcherFactory = &MatcherInfo{
 		return gomega.ContainSubstring(substr, args...).Match(errVal.Error())
 	},
 }
-
-//type panicContainsChecker struct {
-//	*CheckerInfo
-//}
-//
-//var PanicContains Checker = &panicContainsChecker{
-//	&CheckerInfo{Name: "PanicContains", Params: []string{"function", "expected"}},
-//}
-//
-//func (checker *panicContainsChecker) Check(params []interface{}, names []string) (result bool, errmsg string) {
-//	f := reflect.ValueOf(params[0])
-//	if f.Kind() != reflect.Func || f.Type().NumIn() != 0 {
-//		return false, "Function must take zero arguments"
-//	}
-//	defer func() {
-//		// If the function has not panicked, then don't do the check.
-//		if errmsg != "" {
-//			return
-//		}
-//		obtained := recover()
-//		names[0] = "panic"
-//		if e, ok := obtained.(error); ok {
-//			result = strings.Contains(e.Error(), params[1].(string))
-//		} else if e, ok := obtained.(string); ok {
-//			result = strings.Contains(e, params[1].(string))
-//			return
-//		} else {
-//			errmsg = "Panic value is not a string or an error"
-//			return
-//		}
-//	}()
-//	f.Call(nil)
-//	return false, "Function has not panicked"
-//}
