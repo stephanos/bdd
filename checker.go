@@ -2,6 +2,7 @@ package bdd
 
 import (
 	"github.com/onsi/gomega"
+	"fmt"
 )
 
 type Checker struct {
@@ -35,6 +36,10 @@ func Assert(obtained interface{}, matcher MatcherFactory, args ...interface{}) *
 //        Check("foo", Equals, "foo")
 func Check(obtained interface{}, matcher MatcherFactory, args ...interface{}) *Checker {
 	return newChecker(obtained).run(matcher, args...)
+}
+
+func CheckFail(msg string, args ...interface{}) {
+	globalFailHandler(fmt.Sprintf(msg, args...))
 }
 
 func (chk *Checker) And(matcher MatcherFactory, args ...interface{}) *Checker {
