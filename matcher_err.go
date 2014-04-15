@@ -24,7 +24,7 @@ var Panics MatcherFactory = &MatcherInfo{
 //  Check(err, HasOccurred)
 var HasOccurred MatcherFactory = &MatcherInfo{
 	Matcher: func(actual interface{}, _ []interface{}) (success bool, message string, err error) {
-		return gomega.HaveOccured().Match(actual)
+		return gomega.HaveOccurred().Match(actual)
 	},
 }
 
