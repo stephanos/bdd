@@ -6,10 +6,11 @@ import (
 
 // IsAssignableTo succeeds if actual is assignable to the type of expected.
 // It will return an error when one of the values is nil.
-//
-//        Check(0, IsAssignableTo, 0)         // Same values
-//        Check(5, IsAssignableTo, -1)        // different values same type
-//        Check("foo", IsAssignableTo, "bar") // different values same type
-func IsAssignableTo(expected interface{}) gomega.OmegaMatcher {
-	return gomega.BeAssignableToTypeOf(expected)
+var IsAssignableTo Matcher = &matcher{
+	minArgs: 1,
+	maxArgs: 1,
+	name:    "IsAssignableTo",
+	apply: func(actual interface{}, expected []interface{}) Result {
+		return resultFromGomega(gomega.BeAssignableToTypeOf(expected[0]), actual)
+	},
 }

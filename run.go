@@ -8,6 +8,8 @@ import (
 
 var globalFailHandler gomega.OmegaFailHandler
 
+// RunSpecs is the entry point for the test runner.
+// You must call this within a Golang testing TestX(t *testing.T) function.
 func RunSpecs(t *testing.T, descr string) {
 
 	globalFailHandler = func(message string, callerSkip ...int) {

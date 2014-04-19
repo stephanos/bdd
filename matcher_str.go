@@ -3,71 +3,106 @@ package bdd
 import (
 	"fmt"
 	"github.com/onsi/gomega"
+	"github.com/onsi/gomega/format"
 	"strings"
 )
 
+// HasSubstr succeeds if actual is a string or stringer that contains the
+// passed-in substring.
+var HasSubstr Matcher = &matcher{
+	minArgs: 1,
+	maxArgs: 1,
+	name:    "HasSubstr",
+	apply: func(actual interface{}, expected []interface{}) Result {
+		substr, ok := toString(expected[0])
+		if !ok {
+			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
+			return Result{Error: err}
+		}
+
+		return resultFromGomega(gomega.ContainSubstring(substr), actual)
+	},
+}
+
 // Regexp succeeds if actual is a string or stringer that matches the
-// passed-in regexp. Optional arguments can be provided to construct a regexp via fmt.Sprintf().
-var MatchesRegexp MatcherFactory = &MatcherInfo{
-	Parameters: -1,
-	Matcher: func(actual interface{}, expected []interface{}) (success bool, message string, err error) {
-		regex, ok := expected[0].(string)
+// passed-in regexp.
+var MatchesRegexp Matcher = &matcher{
+	minArgs: 1,
+	maxArgs: 1,
+	name:    "MatchesRegexp",
+	apply: func(actual interface{}, expected []interface{}) Result {
+		regex, ok := toString(expected[0])
 		if !ok {
-			err = fmt.Errorf("'regexp' must be a string")
-			return
+			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
+			return Result{Error: err}
 		}
 
-		args := expected[1:]
-		return gomega.MatchRegexp(regex, args...).Match(actual)
+		str, ok := toString(actual)
+		if !ok {
+			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(actual, 1))
+			return Result{Error: err}
+		}
+
+		return resultFromGomega(gomega.MatchRegexp(regex), str)
 	},
 }
 
-// Substr succeeds if actual is a string or stringer that contains the
-// passed-in regexp. Optional arguments can be provided to construct the substring via fmt.Sprintf().
-var HasSubstr MatcherFactory = &MatcherInfo{
-	Parameters: -1,
-	Matcher: func(actual interface{}, expected []interface{}) (success bool, message string, err error) {
-		substr, ok := expected[0].(string)
+// Regexp succeeds if actual is a string or stringer that matches the
+// has the passed-in suffix.
+var HasSuffix Matcher = &matcher{
+	minArgs: 1,
+	maxArgs: 1,
+	name:    "HasSuffix",
+	apply: func(actual interface{}, expected []interface{}) Result {
+		str, ok := toString(actual)
 		if !ok {
-			err = fmt.Errorf("'substr' must be a string")
-			return
+			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(actual, 1))
+			return Result{Error: err}
 		}
 
-		args := expected[1:]
-		return gomega.ContainSubstring(substr, args...).Match(actual)
+		suffix, ok := toString(expected[0])
+		if !ok {
+			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
+			return Result{Error: err}
+		}
+
+		var r Result
+		if strings.HasSuffix(str, suffix) {
+			r.Success = true
+		} else {
+			r.FailureMessage = format.Message(actual, " to have suffix ", expected...)
+			r.NegatedFailureMessage = format.Message(actual, " not to have suffix ", expected...)
+		}
+		return r
 	},
 }
 
-var HasSuffix MatcherFactory = &MatcherInfo{
-	Parameters: 1,
-	Matcher: func(actual interface{}, expected []interface{}) (success bool, message string, err error) {
-		suffix, ok := expected[0].(string)
+// Regexp succeeds if actual is a string or stringer that matches the
+// has the passed-in prefix.
+var HasPrefix Matcher = &matcher{
+	minArgs: 1,
+	maxArgs: 1,
+	name:    "HasSuffix",
+	apply: func(actual interface{}, expected []interface{}) Result {
+		str, ok := toString(actual)
 		if !ok {
-			err = fmt.Errorf("'suffix' must be a string")
-			return
+			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(actual, 1))
+			return Result{Error: err}
 		}
 
-		success, message, err = gomega.ContainSubstring(suffix).Match(actual)
-		if success && !strings.HasSuffix(actual.(string), suffix) {
-			success = false
-		}
-		return
-	},
-}
-
-var HasPrefix MatcherFactory = &MatcherInfo{
-	Parameters: 1,
-	Matcher: func(actual interface{}, expected []interface{}) (success bool, message string, err error) {
-		prefix, ok := expected[0].(string)
+		prefix, ok := toString(expected[0])
 		if !ok {
-			err = fmt.Errorf("'prefix' must be a string")
-			return
+			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
+			return Result{Error: err}
 		}
 
-		success, message, err = gomega.ContainSubstring(prefix).Match(actual)
-		if success && !strings.HasPrefix(actual.(string), prefix) {
-			success = false
+		var r Result
+		if strings.HasPrefix(str, prefix) {
+			r.Success = true
+		} else {
+			r.FailureMessage = format.Message(actual, " to have prefix ", expected...)
+			r.NegatedFailureMessage = format.Message(actual, " not to have prefix ", expected...)
 		}
-		return
+		return r
 	},
 }

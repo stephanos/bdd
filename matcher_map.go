@@ -1,31 +1,29 @@
 package bdd
 
 import (
-	"fmt"
+	_ "fmt"
 	"github.com/onsi/gomega"
 )
 
-// Key succeeds if actual is a map with the passed in key.
-// By default Key uses Equal() to perform the match, however a matcher can be passed in instead.
-var HasKey MatcherFactory = &MatcherInfo{
-	Parameters: 1,
-	Matcher: func(actual interface{}, expected []interface{}) (success bool, message string, err error) {
-		return gomega.HaveKey(expected[0]).Match(actual)
+// HasKey succeeds if actual is a map with the passed-in key.
+var HasKey Matcher = &matcher{
+	minArgs: 1,
+	maxArgs: 1,
+	name:    "HasKey",
+	apply: func(actual interface{}, expected []interface{}) Result {
+		return resultFromGomega(gomega.HaveKey(expected[0]), actual)
 	},
 }
 
-var HasKeys MatcherFactory = &MatcherInfo{
-	Parameters: -1,
-	Matcher: func(actual interface{}, expected []interface{}) (success bool, message string, err error) {
-		for _, exp := range expected {
-			key, ok := exp.(string)
-			if !ok {
-				err = fmt.Errorf("'key' must be string")
-				return
-			}
-
-			success, message, err = gomega.HaveKey(key).Match(actual)
-			if !success {
+// HasKeys succeeds if actual is a map with all passed-in keys.
+var HasKeys Matcher = &matcher{
+	minArgs: 1,
+	maxArgs: 1<<(31) - 1,
+	name:    "HasKeys",
+	apply: func(actual interface{}, expected []interface{}) (r Result) {
+		for _, key := range expected {
+			r = resultFromGomega(gomega.HaveKey(key), actual)
+			if !r.Success {
 				return
 			}
 		}

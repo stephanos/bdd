@@ -1,13 +1,24 @@
 package bdd
 
-type NotMatcher struct {
-	inner MatcherFactory
+type notMatcher struct {
+	inner Matcher
 }
 
-func (nm *NotMatcher) New(expected []interface{}) Matcher {
-	return nil // ignore
+func (m *notMatcher) Apply(actual interface{}, args []interface{}) (r Result) {
+	r = m.inner.Apply(actual, args)
+	r.Success = !r.Success
+	r.FailureMessage, r.NegatedFailureMessage = r.NegatedFailureMessage, r.FailureMessage
+	return
 }
 
-func Not(matcher MatcherFactory) MatcherFactory {
-	return &NotMatcher{matcher}
+func (m *notMatcher) Name() (n string) {
+	if nm, ok := m.inner.(namedMatcher); ok {
+		n = "!" + nm.Name()
+	}
+	return
+}
+
+// Not negates a matcher.
+func Not(m Matcher) Matcher {
+	return &notMatcher{m}
 }

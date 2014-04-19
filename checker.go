@@ -1,66 +1,103 @@
 package bdd
 
 import (
-	"github.com/onsi/gomega"
 	"fmt"
+	"github.com/onsi/ginkgo"
+	"github.com/onsi/gomega"
 )
 
+// Checker makes assertions based on values and matchers.
 type Checker struct {
-	gomega.Actual
-
-	failed   bool
-	negated  bool
-	obtained interface{}
+	failed      bool
+	lastMatcher Matcher
+	obtained    interface{}
 }
 
 func newChecker(obtained interface{}) *Checker {
 	return &Checker{
 		obtained: obtained,
-		Actual:   gomega.Expect(obtained),
 	}
 }
 
 // Ω wraps an actual value allowing assertions to be made on it:
 //        Ω("foo", Equals, "foo")
-func Ω(obtained interface{}, matcher MatcherFactory, args ...interface{}) *Checker {
+func Ω(obtained interface{}, matcher Matcher, args ...interface{}) *Checker {
 	return newChecker(obtained).run(matcher, args...)
 }
 
 // Assert wraps an actual value allowing assertions to be made on it:
+//        Assert("foo", Equals, "foo")
+func Assert(obtained interface{}, matcher Matcher, args ...interface{}) *Checker {
+	return newChecker(obtained).run(matcher, args...)
+}
+
+// Expect wraps an actual value allowing assertions to be made on it:
 //        Expect("foo", Equals, "foo")
-func Assert(obtained interface{}, matcher MatcherFactory, args ...interface{}) *Checker {
+func Expect(obtained interface{}, matcher Matcher, args ...interface{}) *Checker {
 	return newChecker(obtained).run(matcher, args...)
 }
 
 // Check wraps an actual value allowing assertions to be made on it:
 //        Check("foo", Equals, "foo")
-func Check(obtained interface{}, matcher MatcherFactory, args ...interface{}) *Checker {
+func Check(obtained interface{}, matcher Matcher, args ...interface{}) *Checker {
 	return newChecker(obtained).run(matcher, args...)
 }
 
+// Fail will record a failure for the current space and panic. This stops
+// the current spec in its tracks - no subsequent assertions will be called.
 func CheckFail(msg string, args ...interface{}) {
-	globalFailHandler(fmt.Sprintf(msg, args...))
+	ginkgo.Fail(fmt.Sprintf(msg, args...))
 }
 
-func (chk *Checker) And(matcher MatcherFactory, args ...interface{}) *Checker {
-	chk.negated = false
+// And runs an assertion after the previous one. The obtained value is taken from
+// the previous one. It is only run when the previous assertion was successful.
+func (chk *Checker) And(args ...interface{}) *Checker {
 	if !chk.failed {
-		return chk.run(matcher, args...)
+		if len(args) < 1 {
+			panic("missing arguments for And(...)")
+		}
+
+		if matcher, ok := args[0].(Matcher); ok {
+			return chk.run(matcher, args[1:]...)
+		}
+
+		return chk.run(chk.lastMatcher, args...)
 	}
 	return chk
 }
 
-func (chk *Checker) run(matcher MatcherFactory, args ...interface{}) *Checker {
-	if notMatcher, ok := matcher.(*NotMatcher); ok {
-		chk.negated = !chk.negated
-		matcher = notMatcher.inner
+// ButNot runs an assertion after a previous one. The obtained value is taken from
+// the previous one, the previous matcher negated. It is only run when the previous
+// assertion was successful.
+func (chk *Checker) ButNot(args ...interface{}) *Checker {
+	if !chk.failed {
+		return chk.run(Not(chk.lastMatcher), args...)
+	}
+	return chk
+}
+
+func (chk *Checker) result(matcher Matcher, args []interface{}) Result {
+	chk.lastMatcher = matcher
+
+	haveArgs := len(args)
+	if m, ok := matcher.(ArgsMaximum); ok {
+		if haveArgs > m.MaxArgs() {
+			err := fmt.Errorf("Expected at most %d parameter(s), but got %d", m.MaxArgs(), haveArgs)
+			return Result{Error: err}
+		}
+	}
+	if m, ok := matcher.(ArgsMinimum); ok {
+		if haveArgs < m.MinArgs() {
+			err := fmt.Errorf("Expected at least %d parameter(s), but got %d", m.MinArgs(), haveArgs)
+			return Result{Error: err}
+		}
 	}
 
-	inst := matcher.New(args)
-	if chk.negated {
-		chk.failed = !chk.Actual.ToNot(inst)
-	} else {
-		chk.failed = !chk.Actual.To(inst)
-	}
+	return matcher.Apply(chk.obtained, args)
+}
+
+func (chk *Checker) run(matcher Matcher, args ...interface{}) *Checker {
+	gomegaMatcher := newGomegaMatcher(chk.result(matcher, args))
+	chk.failed = !gomega.Expect(chk.obtained).To(gomegaMatcher)
 	return chk
 }

@@ -3,45 +3,64 @@ package bdd
 import (
 	"fmt"
 	"github.com/onsi/gomega"
+	"github.com/onsi/gomega/format"
+	"strings"
 )
 
 type panicMatcher struct {
-	*MatcherInfo
+	*matcher
 }
 
 // Panics succeeds if actual is a function that, when invoked, panics.
 // Actual must be a function that takes no arguments and returns no results.
-var Panics MatcherFactory = &MatcherInfo{
-	Matcher: func(actual interface{}, _ []interface{}) (success bool, message string, err error) {
-		return gomega.Panic().Match(actual)
+var Panics Matcher = &matcher{
+	name: "Panics",
+	apply: func(actual interface{}, _ []interface{}) Result {
+		return resultFromGomega(gomega.Panic(), actual)
 	},
 }
 
-// HasOccurred succeeds if actual is a non-nil error
-// The typical Go error checking pattern looks like:
-//
-//  err := SomethingThatMightFail()
-//  Check(err, HasOccurred)
-var HasOccurred MatcherFactory = &MatcherInfo{
-	Matcher: func(actual interface{}, _ []interface{}) (success bool, message string, err error) {
-		return gomega.HaveOccurred().Match(actual)
+// HasOccurred succeeds if actual is a non-nil error.
+var HasOccurred Matcher = &matcher{
+	name: "HasOccurred",
+	apply: func(actual interface{}, _ []interface{}) Result {
+		if actual == nil {
+			return Result{
+				FailureMessage:        fmt.Sprintf("Expected an error to have occured.  Got:\n%s", format.Object(actual, 1)),
+				NegatedFailureMessage: fmt.Sprintf("Expected an error to have occured. Got:\n%s", format.Object(actual, 1)),
+			}
+		}
+		return resultFromGomega(gomega.HaveOccurred(), actual)
 	},
 }
 
-var ErrorContains MatcherFactory = &MatcherInfo{
-	Parameters: 1,
-	Matcher: func(actual interface{}, expected []interface{}) (success bool, message string, err error) {
-		errVal, ok := actual.(error)
+// ErrorContains succeeds if actual is a non-nil error and contains
+// the passed-in substring.
+var ErrorContains Matcher = &matcher{
+	minArgs: 1,
+	maxArgs: 1,
+	name:    "ErrorContains",
+	apply: func(actual interface{}, expected []interface{}) Result {
+		err, ok := actual.(error)
 		if !ok {
-			err = fmt.Errorf("did not obtain error")
-			return
+			err := fmt.Errorf("Expected an error, got: \n %s", format.Object(actual, 1))
+			return Result{Error: err}
 		}
-		substr, ok := expected[0].(string)
+		errStr := err.Error()
+
+		substr, ok := toString(expected[0])
 		if !ok {
-			err = fmt.Errorf("'substr' must be a string")
-			return
+			err := fmt.Errorf("Expected a string, got: \n %s", format.Object(expected[0], 1))
+			return Result{Error: err}
 		}
-		args := expected[1:]
-		return gomega.ContainSubstring(substr, args...).Match(errVal.Error())
+
+		var r Result
+		if strings.Contains(errStr, substr) {
+			r.Success = true
+		} else {
+			r.FailureMessage = fmt.Sprintf("Expected\n<error>: %s\n%s\n%s", errStr, " to contain ", format.Object(expected[0], 1))
+			r.NegatedFailureMessage = fmt.Sprintf("Expected\n<error>: %s\n%s\n%s", errStr, " not to contain ", format.Object(expected[0], 1))
+		}
+		return r
 	},
 }
