@@ -80,13 +80,13 @@ func (chk *Checker) result(matcher Matcher, args []interface{}) Result {
 	chk.lastMatcher = matcher
 
 	haveArgs := len(args)
-	if m, ok := matcher.(ArgsMaximum); ok {
+	if m, ok := matcher.(MatcherArgsLimiter); ok {
 		if haveArgs > m.MaxArgs() {
 			err := fmt.Errorf("Expected at most %d parameter(s), but got %d", m.MaxArgs(), haveArgs)
 			return Result{Error: err}
 		}
 	}
-	if m, ok := matcher.(ArgsMinimum); ok {
+	if m, ok := matcher.(MatcherArgsRequierer); ok {
 		if haveArgs < m.MinArgs() {
 			err := fmt.Errorf("Expected at least %d parameter(s), but got %d", m.MinArgs(), haveArgs)
 			return Result{Error: err}

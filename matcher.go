@@ -8,15 +8,15 @@ type Matcher interface {
 	Apply(obtained interface{}, args []interface{}) Result
 }
 
-// ArgsMinimum can require a certain amount of arguments for a matcher.
-type ArgsMinimum interface {
+// MatcherArgsRequierer can require a certain amount of arguments for a matcher.
+type MatcherArgsRequierer interface {
 
 	// MinArgs is the minimum number of arguments for a matcher.
 	MinArgs() int
 }
 
-// ArgsMaximum can limit the amount of arguments for a matcher.
-type ArgsMaximum interface {
+// MatcherArgsLimiter can limit the amount of arguments for a matcher.
+type MatcherArgsLimiter interface {
 
 	// MinArgs is the maximum number of arguments for a matcher.
 	MaxArgs() int
