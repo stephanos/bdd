@@ -2,6 +2,12 @@ language: go
 go:
   - 1.2
 
+before_script:
+  - chmod +x *.sh
+  - ./install-sdk.sh
+  - go get -u github.com/mattn/goveralls
+  - go get -u code.google.com/p/go.tools/cmd/cover
+
 install:
   - go get -u github.com/onsi/gomega
   - go get -u github.com/onsi/ginkgo
@@ -9,3 +15,4 @@ install:
 script:
   - go build
   - go test -v ./...
+  - ~/gopath/bin/goveralls -coverprofile=profile.cov -service=travis-ci

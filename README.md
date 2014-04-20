@@ -1,4 +1,4 @@
-bdd [![Build Status](https://secure.travis-ci.org/101loops/bdd.png)](https://travis-ci.org/101loops/bdd)
+bdd [![Build Status](https://secure.travis-ci.org/101loops/bdd.png)](https://travis-ci.org/101loops/bdd) [![Coverage Status](https://coveralls.io/repos/101loops/bdd/badge.png)](https://coveralls.io/r/101loops/bdd)
 ======
 
 Go package for writing BDD-style tests.
