@@ -14,13 +14,13 @@ var eqMatcherTests = []matcherTest{
 	{
 		result(1, Equals),
 		Result{
-			Error: errors.New("Expected at least 1 parameter(s), but got 0"),
+			Error: errors.New("expected at least 1 parameter(s), but got 0"),
 		},
 	},
 	{
 		result(1, Equals, 1, 2),
 		Result{
-			Error: errors.New("Expected at most 1 parameter(s), but got 2"),
+			Error: errors.New("expected at most 1 parameter(s), but got 2"),
 		},
 	},
 	{
@@ -59,7 +59,7 @@ var eqMatcherTests = []matcherTest{
 	{
 		result(nil, IsNil, nil),
 		Result{
-			Error: errors.New("Expected at most 0 parameter(s), but got 1"),
+			Error: errors.New("expected at most 0 parameter(s), but got 1"),
 		},
 	},
 

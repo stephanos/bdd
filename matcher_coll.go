@@ -8,14 +8,14 @@ import (
 
 // HasLen succeeds if actual has the passed-in length. Actual must be of type
 // string, array, map, chan, or slice.
-var HasLen Matcher = &matcher{
+var HasLen = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "HasLen",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		len, ok := expected[0].(int)
 		if !ok {
-			err := fmt.Errorf("Expected length to be an int, got: \n %s", format.Object(expected[0], 1))
+			err := fmt.Errorf("expected length to be an int, got: \n %s", format.Object(expected[0], 1))
 			return Result{Error: err}
 		}
 
@@ -25,7 +25,7 @@ var HasLen Matcher = &matcher{
 
 // IsEmpty succeeds if actual is empty. Actual must be of type
 // string, array, map, chan, or slice.
-var IsEmpty Matcher = &matcher{
+var IsEmpty = &matcher{
 	name: "IsEmpty",
 	apply: func(actual interface{}, _ []interface{}) Result {
 		return resultFromGomega(gomega.BeEmpty(), actual)
@@ -34,7 +34,7 @@ var IsEmpty Matcher = &matcher{
 
 // HasElem succeeds if actual contains the passed in element. Actual must be
 // an array, slice or map. For maps, HasElem searches through the map's values.
-var HasElem Matcher = &matcher{
+var HasElem = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "HasElem",
@@ -45,7 +45,7 @@ var HasElem Matcher = &matcher{
 
 // HasElems succeeds if actual contains all passed in element. Actual must be
 // an array, slice or map. For maps, HasElems searches through the map's values.
-var HasElems Matcher = &matcher{
+var HasElems = &matcher{
 	minArgs: 1,
 	maxArgs: 1<<(31) - 1,
 	name:    "HasElems",
@@ -62,7 +62,7 @@ var HasElems Matcher = &matcher{
 
 // Contains succeeds if actual contains all passed in substrings / elements.
 // Actual must be an error, string, stringer, array, slice or map.
-var Contains Matcher = &matcher{
+var Contains = &matcher{
 	minArgs: 1,
 	maxArgs: 1<<(31) - 1,
 	name:    "Contains",

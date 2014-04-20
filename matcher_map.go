@@ -1,12 +1,11 @@
 package bdd
 
 import (
-	_ "fmt"
 	"github.com/onsi/gomega"
 )
 
 // HasKey succeeds if actual is a map with the passed-in key.
-var HasKey Matcher = &matcher{
+var HasKey = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "HasKey",
@@ -16,7 +15,7 @@ var HasKey Matcher = &matcher{
 }
 
 // HasKeys succeeds if actual is a map with all passed-in keys.
-var HasKeys Matcher = &matcher{
+var HasKeys = &matcher{
 	minArgs: 1,
 	maxArgs: 1<<(31) - 1,
 	name:    "HasKeys",

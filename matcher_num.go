@@ -4,7 +4,8 @@ import (
 	"github.com/onsi/gomega"
 )
 
-var IsGreaterThan Matcher = &matcher{
+// IsGreaterThan succeeds if actual is a greater than the passed-in number.
+var IsGreaterThan = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "IsGreaterThan",
@@ -13,7 +14,9 @@ var IsGreaterThan Matcher = &matcher{
 	},
 }
 
-var IsGreaterThanOrEqTo Matcher = &matcher{
+// IsGreaterThanOrEqTo succeeds if actual is a greater than or equal to
+// the passed-in number.
+var IsGreaterThanOrEqTo = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "IsGreaterThanOrEqTo",
@@ -22,7 +25,8 @@ var IsGreaterThanOrEqTo Matcher = &matcher{
 	},
 }
 
-var IsLessThan Matcher = &matcher{
+// IsLessThan succeeds if actual is a smaller than the passed-in number.
+var IsLessThan = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "IsLessThan",
@@ -31,7 +35,9 @@ var IsLessThan Matcher = &matcher{
 	},
 }
 
-var IsLessThanOrEqTo Matcher = &matcher{
+// IsLessThanOrEqTo succeeds if actual is a smaller than or equal to
+// the passed-in number.
+var IsLessThanOrEqTo = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "IsLessThanOrEqTo",
@@ -40,7 +46,8 @@ var IsLessThanOrEqTo Matcher = &matcher{
 	},
 }
 
-var EqualsNum Matcher = &matcher{
+// EqualsNum succeeds if actual has the same numeric value as the passed-in number.
+var EqualsNum = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "EqualsNum",
@@ -49,7 +56,9 @@ var EqualsNum Matcher = &matcher{
 	},
 }
 
-var IsRoughly Matcher = &matcher{
+// IsRoughly succeeds if actual has about the same numeric value as the
+// passed-in number. The second passed-in argument defines the threshold.
+var IsRoughly = &matcher{
 	minArgs: 2,
 	maxArgs: 2,
 	name:    "IsRoughly",

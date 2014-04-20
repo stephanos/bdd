@@ -7,7 +7,7 @@ import (
 // Equal uses reflect.DeepEqual to compare actual with expected.
 // It's strict about types when performing comparisons.
 // It is an error for both actual and expected to be nil. Use IsNil instead.
-var Equals Matcher = &matcher{
+var Equals = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "Equals",
@@ -20,7 +20,7 @@ var Equals Matcher = &matcher{
 // This is done by converting actual to have the type of expected before
 // attempting equality with reflect.DeepEqual.
 // It is an error for actual and expected to be nil. Use IsNil instead.
-var IsEquivalentTo Matcher = &matcher{
+var IsEquivalentTo = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "IsEquivalentTo",
@@ -30,7 +30,7 @@ var IsEquivalentTo Matcher = &matcher{
 }
 
 // IsNil succeeds if actual is nil
-var IsNil Matcher = &matcher{
+var IsNil = &matcher{
 
 	name: "IsNil",
 	apply: func(actual interface{}, expected []interface{}) Result {
@@ -39,10 +39,10 @@ var IsNil Matcher = &matcher{
 }
 
 // NotNil succeeds if actual is not nil
-var NotNil Matcher = Not(IsNil)
+var NotNil = Not(IsNil)
 
 // IsTrue succeeds if actual is true
-var IsTrue Matcher = &matcher{
+var IsTrue = &matcher{
 
 	name: "IsTrue",
 	apply: func(actual interface{}, expected []interface{}) Result {
@@ -51,7 +51,7 @@ var IsTrue Matcher = &matcher{
 }
 
 // IsFalse succeeds if actual is false
-var IsFalse Matcher = &matcher{
+var IsFalse = &matcher{
 
 	name: "IsFalse",
 	apply: func(actual interface{}, expected []interface{}) Result {
@@ -60,7 +60,7 @@ var IsFalse Matcher = &matcher{
 }
 
 // IsZero succeeds if actual is the zero value for its type or if actual is nil.
-var IsZero Matcher = &matcher{
+var IsZero = &matcher{
 
 	name: "IsZero",
 	apply: func(actual interface{}, expected []interface{}) Result {

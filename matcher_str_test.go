@@ -14,7 +14,7 @@ var strMatcherTests = []matcherTest{
 	{
 		result("team", HasSubstr, 1),
 		Result{
-			Error: errors.New("Expected a string or stringer, got: <int>: 1"),
+			Error: errors.New("expected a string or stringer, got: <int>: 1"),
 		},
 	},
 	{
@@ -33,13 +33,13 @@ var strMatcherTests = []matcherTest{
 	{
 		result("golang", HasSuffix, 1),
 		Result{
-			Error: errors.New("Expected a string or stringer, got: <int>: 1"),
+			Error: errors.New("expected a string or stringer, got: <int>: 1"),
 		},
 	},
 	{
 		result(11, HasSuffix, "one"),
 		Result{
-			Error: errors.New("Expected a string or stringer, got: <int>: 11"),
+			Error: errors.New("expected a string or stringer, got: <int>: 11"),
 		},
 	},
 	{
@@ -58,13 +58,13 @@ var strMatcherTests = []matcherTest{
 	{
 		result("golang", HasPrefix, 1),
 		Result{
-			Error: errors.New("Expected a string or stringer, got: <int>: 1"),
+			Error: errors.New("expected a string or stringer, got: <int>: 1"),
 		},
 	},
 	{
 		result(11, HasPrefix, "ten"),
 		Result{
-			Error: errors.New("Expected a string or stringer, got: <int>: 11"),
+			Error: errors.New("expected a string or stringer, got: <int>: 11"),
 		},
 	},
 	{
@@ -83,13 +83,13 @@ var strMatcherTests = []matcherTest{
 	{
 		result("golang", MatchesRegexp, 1),
 		Result{
-			Error: errors.New("Expected a string or stringer, got: <int>: 1"),
+			Error: errors.New("expected a string or stringer, got: <int>: 1"),
 		},
 	},
 	{
 		result(1, MatchesRegexp, "golang"),
 		Result{
-			Error: errors.New("Expected a string or stringer, got: <int>: 1"),
+			Error: errors.New("expected a string or stringer, got: <int>: 1"),
 		},
 	},
 	{

@@ -9,14 +9,14 @@ import (
 
 // HasSubstr succeeds if actual is a string or stringer that contains the
 // passed-in substring.
-var HasSubstr Matcher = &matcher{
+var HasSubstr = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "HasSubstr",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		substr, ok := toString(expected[0])
 		if !ok {
-			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
+			err := fmt.Errorf("expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
 			return Result{Error: err}
 		}
 
@@ -26,20 +26,20 @@ var HasSubstr Matcher = &matcher{
 
 // Regexp succeeds if actual is a string or stringer that matches the
 // passed-in regexp.
-var MatchesRegexp Matcher = &matcher{
+var MatchesRegexp = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "MatchesRegexp",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		regex, ok := toString(expected[0])
 		if !ok {
-			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
+			err := fmt.Errorf("expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
 			return Result{Error: err}
 		}
 
 		str, ok := toString(actual)
 		if !ok {
-			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(actual, 1))
+			err := fmt.Errorf("expected a string or stringer, got: \n %s", format.Object(actual, 1))
 			return Result{Error: err}
 		}
 
@@ -49,20 +49,20 @@ var MatchesRegexp Matcher = &matcher{
 
 // Regexp succeeds if actual is a string or stringer that matches the
 // has the passed-in suffix.
-var HasSuffix Matcher = &matcher{
+var HasSuffix = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "HasSuffix",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		str, ok := toString(actual)
 		if !ok {
-			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(actual, 1))
+			err := fmt.Errorf("expected a string or stringer, got: \n %s", format.Object(actual, 1))
 			return Result{Error: err}
 		}
 
 		suffix, ok := toString(expected[0])
 		if !ok {
-			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
+			err := fmt.Errorf("expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
 			return Result{Error: err}
 		}
 
@@ -79,20 +79,20 @@ var HasSuffix Matcher = &matcher{
 
 // Regexp succeeds if actual is a string or stringer that matches the
 // has the passed-in prefix.
-var HasPrefix Matcher = &matcher{
+var HasPrefix = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "HasSuffix",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		str, ok := toString(actual)
 		if !ok {
-			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(actual, 1))
+			err := fmt.Errorf("expected a string or stringer, got: \n %s", format.Object(actual, 1))
 			return Result{Error: err}
 		}
 
 		prefix, ok := toString(expected[0])
 		if !ok {
-			err := fmt.Errorf("Expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
+			err := fmt.Errorf("expected a string or stringer, got: \n %s", format.Object(expected[0], 1))
 			return Result{Error: err}
 		}
 

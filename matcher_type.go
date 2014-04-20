@@ -6,7 +6,7 @@ import (
 
 // IsAssignableTo succeeds if actual is assignable to the type of expected.
 // It will return an error when one of the values is nil.
-var IsAssignableTo Matcher = &matcher{
+var IsAssignableTo = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "IsAssignableTo",

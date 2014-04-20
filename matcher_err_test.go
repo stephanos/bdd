@@ -22,8 +22,8 @@ var errMatcherTests = []matcherTest{
 	{
 		result(nil, HasOccurred),
 		Result{
-			FailureMessage:        "Expected an error to have occured. Got: <nil>: nil",
-			NegatedFailureMessage: "Expected an error to have occured. Got: <nil>: nil",
+			FailureMessage:        "expected an error to have occured. Got: <nil>: nil",
+			NegatedFailureMessage: "expected an error to have occured. Got: <nil>: nil",
 		},
 	},
 
@@ -35,13 +35,13 @@ var errMatcherTests = []matcherTest{
 	{
 		result(nil, ErrorContains, "error"),
 		Result{
-			Error: errors.New("Expected an error, got: <nil>: nil"),
+			Error: errors.New("expected an error, got: <nil>: nil"),
 		},
 	},
 	{
 		result(errors.New("database error"), ErrorContains, 42),
 		Result{
-			Error: errors.New("Expected a string, got: <int>: 42"),
+			Error: errors.New("expected a string, got: <int>: 42"),
 		},
 	},
 	{

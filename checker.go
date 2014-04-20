@@ -43,7 +43,7 @@ func Check(obtained interface{}, matcher Matcher, args ...interface{}) *Checker 
 	return newChecker(obtained).run(matcher, args...)
 }
 
-// Fail will record a failure for the current space and panic. This stops
+// CheckFail will record a failure for the current space and panic. This stops
 // the current spec in its tracks - no subsequent assertions will be called.
 func CheckFail(msg string, args ...interface{}) {
 	ginkgo.Fail(fmt.Sprintf(msg, args...))
@@ -82,13 +82,13 @@ func (chk *Checker) result(matcher Matcher, args []interface{}) Result {
 	haveArgs := len(args)
 	if m, ok := matcher.(MatcherArgsLimiter); ok {
 		if haveArgs > m.MaxArgs() {
-			err := fmt.Errorf("Expected at most %d parameter(s), but got %d", m.MaxArgs(), haveArgs)
+			err := fmt.Errorf("expected at most %d parameter(s), but got %d", m.MaxArgs(), haveArgs)
 			return Result{Error: err}
 		}
 	}
 	if m, ok := matcher.(MatcherArgsRequierer); ok {
 		if haveArgs < m.MinArgs() {
-			err := fmt.Errorf("Expected at least %d parameter(s), but got %d", m.MinArgs(), haveArgs)
+			err := fmt.Errorf("expected at least %d parameter(s), but got %d", m.MinArgs(), haveArgs)
 			return Result{Error: err}
 		}
 	}

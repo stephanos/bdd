@@ -13,7 +13,7 @@ type panicMatcher struct {
 
 // Panics succeeds if actual is a function that, when invoked, panics.
 // Actual must be a function that takes no arguments and returns no results.
-var Panics Matcher = &matcher{
+var Panics = &matcher{
 	name: "Panics",
 	apply: func(actual interface{}, _ []interface{}) Result {
 		return resultFromGomega(gomega.Panic(), actual)
@@ -21,13 +21,13 @@ var Panics Matcher = &matcher{
 }
 
 // HasOccurred succeeds if actual is a non-nil error.
-var HasOccurred Matcher = &matcher{
+var HasOccurred = &matcher{
 	name: "HasOccurred",
 	apply: func(actual interface{}, _ []interface{}) Result {
 		if actual == nil {
 			return Result{
-				FailureMessage:        fmt.Sprintf("Expected an error to have occured.  Got:\n%s", format.Object(actual, 1)),
-				NegatedFailureMessage: fmt.Sprintf("Expected an error to have occured. Got:\n%s", format.Object(actual, 1)),
+				FailureMessage:        fmt.Sprintf("expected an error to have occured.  Got:\n%s", format.Object(actual, 1)),
+				NegatedFailureMessage: fmt.Sprintf("expected an error to have occured. Got:\n%s", format.Object(actual, 1)),
 			}
 		}
 		return resultFromGomega(gomega.HaveOccurred(), actual)
@@ -36,21 +36,21 @@ var HasOccurred Matcher = &matcher{
 
 // ErrorContains succeeds if actual is a non-nil error and contains
 // the passed-in substring.
-var ErrorContains Matcher = &matcher{
+var ErrorContains = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
 	name:    "ErrorContains",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		err, ok := actual.(error)
 		if !ok {
-			err := fmt.Errorf("Expected an error, got: \n %s", format.Object(actual, 1))
+			err := fmt.Errorf("expected an error, got: \n %s", format.Object(actual, 1))
 			return Result{Error: err}
 		}
 		errStr := err.Error()
 
 		substr, ok := toString(expected[0])
 		if !ok {
-			err := fmt.Errorf("Expected a string, got: \n %s", format.Object(expected[0], 1))
+			err := fmt.Errorf("expected a string, got: \n %s", format.Object(expected[0], 1))
 			return Result{Error: err}
 		}
 
