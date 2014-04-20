@@ -7,8 +7,7 @@ before_script:
   - go get -u code.google.com/p/go.tools/cmd/cover
 
 install:
-  - go get -u github.com/onsi/gomega
-  - go get -u github.com/onsi/ginkgo
+  - go get
 
 script:
   - go build
