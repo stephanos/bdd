@@ -12,11 +12,16 @@ func Describe(text string, body func()) bool {
 	return ginkgo.Describe(text, body)
 }
 
-// With blocks allow you to organize your specs.
+// Context blocks allow you to organize your specs.
 // They can contain any number of BeforeEach, AfterEach, and It blocks.
 //
-// With blocks are usually used inside a Describe block to distinguish
+// Context blocks are usually used inside a Describe block to distinguish
 // various scenarios.
+func Context(text string, body func()) bool {
+	return ginkgo.Context(text, body)
+}
+
+// With blocks are an alias for With blocks.
 func With(text string, body func()) bool {
 	return ginkgo.Context(text, body)
 }
@@ -26,12 +31,27 @@ func When(text string, body func()) bool {
 	return ginkgo.Context(text, body)
 }
 
+// Scenario blocks are an alias for With blocks.
+func Scenario(text string, body func()) bool {
+	return ginkgo.Context(text, body)
+}
+
 // It blocks allow you to organize your specs.
 // They can not contain other blocks, only assertions.
 //
 // Normally It blocks are run synchronously. To perform asynchronous tests,
 // pass a function that accepts a Done channel. When you do this, you can alsos provide an optional timeout.
 func It(text string, body interface{}, timeout ...float64) bool {
+	return ginkgo.It(text, body, timeout...)
+}
+
+// To blocks are an alias for It blocks.
+func To(text string, body interface{}, timeout ...float64) bool {
+	return ginkgo.It(text, body, timeout...)
+}
+
+// Should blocks are an alias for It blocks.
+func Should(text string, body interface{}, timeout ...float64) bool {
 	return ginkgo.It(text, body, timeout...)
 }
 
