@@ -7,7 +7,7 @@ before_script:
   - go get -u code.google.com/p/go.tools/cmd/cover
 
 install:
-  - go get
+  - go get -v -t ./...
 
 script:
   - go build
