@@ -83,6 +83,19 @@ var timeMatcherTests = []matcherTest{
 			NegatedFailureMessage: "Expected 1969-07-20 20:01:40 +0000 UTC to be before 1989-11-09 20:00:00 +0000 UTC",
 		},
 	},
+
+	// IsSameTimeAs
+	{
+		result(fallBerlinWall, IsSameTimeAs, fallBerlinWall),
+		Result{Success: true},
+	},
+	{
+		result(moonLanding, IsSameTimeAs, fallBerlinWall),
+		Result{
+			FailureMessage:        "Expected 1969-07-20 20:01:40 +0000 UTC to be same time as 1989-11-09 20:00:00 +0000 UTC",
+			NegatedFailureMessage: "Expected 1969-07-20 20:01:40 +0000 UTC not to be same time as 1989-11-09 20:00:00 +0000 UTC",
+		},
+	},
 }
 
 func Test_Time(t *testing.T) {

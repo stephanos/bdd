@@ -6,6 +6,36 @@ import (
 	"time"
 )
 
+// IsSameTimeAs succeeds if actual is the same time or later
+// than the passed-in time.
+var IsSameTimeAs = &matcher{
+	minArgs: 1,
+	maxArgs: 1,
+	name:    "IsSameTimeAs",
+	apply: func(actual interface{}, expected []interface{}) Result {
+		t1, ok := actual.(time.Time)
+		if !ok {
+			err := fmt.Errorf("expected a time.Time, got: \n %s", format.Object(actual, 1))
+			return Result{Error: err}
+		}
+
+		t2, ok := expected[0].(time.Time)
+		if !ok {
+			err := fmt.Errorf("expected a time.Time, got: \n %s", format.Object(expected[0], 1))
+			return Result{Error: err}
+		}
+
+		var r Result
+		if t1.Equal(t2) {
+			r.Success = true
+		} else {
+			r.FailureMessage = timeMismatch(t1, " to be same time as ", t2)
+			r.NegatedFailureMessage = timeMismatch(t1, " not to be same time as ", t2)
+		}
+		return r
+	},
+}
+
 // IsBefore succeeds if actual is earlier than the passed-in time.
 var IsBefore = &matcher{
 	minArgs: 1,
@@ -69,7 +99,7 @@ var IsAfter = &matcher{
 var IsOnOrBefore = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
-	name:    "IsSameTimeOrBefore",
+	name:    "IsOnOrBefore",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		before, ok := actual.(time.Time)
 		if !ok {
@@ -99,7 +129,7 @@ var IsOnOrBefore = &matcher{
 var IsOnOrAfter = &matcher{
 	minArgs: 1,
 	maxArgs: 1,
-	name:    "IsSameTimeOrAfter",
+	name:    "IsOnOrAfter",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		after, ok := actual.(time.Time)
 		if !ok {
