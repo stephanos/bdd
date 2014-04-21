@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	moonLanding    = time.Unix(-14183900, 0)
-	fallBerlinWall = time.Unix(626644800, 0)
+	moonLanding    = time.Unix(-14183900, 0).UTC()
+	fallBerlinWall = time.Unix(626644800, 0).UTC()
 )
 
 var timeMatcherTests = []matcherTest{
@@ -32,8 +32,8 @@ var timeMatcherTests = []matcherTest{
 	{
 		result(fallBerlinWall, IsBefore, moonLanding),
 		Result{
-			FailureMessage:        "Expected 1989-11-09 21:00:00 +0100 CET to be before 1969-07-20 21:01:40 +0100 CET",
-			NegatedFailureMessage: "Expected 1989-11-09 21:00:00 +0100 CET not to be before 1969-07-20 21:01:40 +0100 CET",
+			FailureMessage:        "Expected 1989-11-09 20:00:00 +0000 UTC to be before 1969-07-20 20:01:40 +0000 UTC",
+			NegatedFailureMessage: "Expected 1989-11-09 20:00:00 +0000 UTC not to be before 1969-07-20 20:01:40 +0000 UTC",
 		},
 	},
 
@@ -45,8 +45,8 @@ var timeMatcherTests = []matcherTest{
 	{
 		result(moonLanding, IsAfter, fallBerlinWall),
 		Result{
-			FailureMessage:        "Expected 1969-07-20 21:01:40 +0100 CET to be after 1989-11-09 21:00:00 +0100 CET",
-			NegatedFailureMessage: "Expected 1969-07-20 21:01:40 +0100 CET not to be after 1989-11-09 21:00:00 +0100 CET",
+			FailureMessage:        "Expected 1969-07-20 20:01:40 +0000 UTC to be after 1989-11-09 20:00:00 +0000 UTC",
+			NegatedFailureMessage: "Expected 1969-07-20 20:01:40 +0000 UTC not to be after 1989-11-09 20:00:00 +0000 UTC",
 		},
 	},
 
@@ -62,8 +62,8 @@ var timeMatcherTests = []matcherTest{
 	{
 		result(fallBerlinWall, IsOnOrBefore, moonLanding),
 		Result{
-			FailureMessage:        "Expected 1989-11-09 21:00:00 +0100 CET to be before or same time as 1969-07-20 21:01:40 +0100 CET",
-			NegatedFailureMessage: "Expected 1989-11-09 21:00:00 +0100 CET to be after 1969-07-20 21:01:40 +0100 CET",
+			FailureMessage:        "Expected 1989-11-09 20:00:00 +0000 UTC to be before or same time as 1969-07-20 20:01:40 +0000 UTC",
+			NegatedFailureMessage: "Expected 1989-11-09 20:00:00 +0000 UTC to be after 1969-07-20 20:01:40 +0000 UTC",
 		},
 	},
 
@@ -79,8 +79,8 @@ var timeMatcherTests = []matcherTest{
 	{
 		result(moonLanding, IsOnOrAfter, fallBerlinWall),
 		Result{
-			FailureMessage:        "Expected 1969-07-20 21:01:40 +0100 CET to be after or same time as 1989-11-09 21:00:00 +0100 CET",
-			NegatedFailureMessage: "Expected 1969-07-20 21:01:40 +0100 CET to be before 1989-11-09 21:00:00 +0100 CET",
+			FailureMessage:        "Expected 1969-07-20 20:01:40 +0000 UTC to be after or same time as 1989-11-09 20:00:00 +0000 UTC",
+			NegatedFailureMessage: "Expected 1969-07-20 20:01:40 +0000 UTC to be before 1989-11-09 20:00:00 +0000 UTC",
 		},
 	},
 }
