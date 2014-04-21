@@ -155,6 +155,10 @@ var IsOnOrAfter = &matcher{
 }
 
 func timeMismatch(t1 time.Time, message string, t2 time.Time) string {
-	strT1, strT2 := t1.String(), t2.String()
+	strT1, strT2 := formatTime(t1), formatTime(t2)
 	return fmt.Sprintf("Expected\n%s\n%s\n%s", strT1, message, strT2)
+}
+
+func formatTime(t time.Time) string {
+	return format.Indent + t.String()
 }
