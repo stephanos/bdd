@@ -28,7 +28,7 @@ var _ = Describe("User Service", func() {
 http://godoc.org/github.com/101loops/bdd
 
 ### Credit
-Uses [Ginkgo](http://onsi.github.io/ginkgo/) and [Gomga](http://onsi.github.io/gomega/) internally.
+Uses [Ginkgo](http://onsi.github.io/ginkgo/) and [Gomga](http://onsi.github.io/gomega/) internally (both MIT).
 
 ### License
 MIT (see LICENSE).
