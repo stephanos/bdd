@@ -3,10 +3,7 @@ bdd [![Build Status](https://secure.travis-ci.org/101loops/bdd.png)](https://tra
 
 Go package for writing BDD-style tests.
 
-### Installation
-`go get github.com/101loops/bdd`
-
-### Example
+## Example
 ```go
 package bdd
 
@@ -24,11 +21,16 @@ var _ = Describe("User Service", func() {
 })
 ```
 
-### Documentation
+## Install
+```bash
+go get github.com/101loops/bdd`
+```
+
+## Documentation
 http://godoc.org/github.com/101loops/bdd
 
-### Credit
+## Credit
 Uses [Ginkgo](http://onsi.github.io/ginkgo/) and [Gomga](http://onsi.github.io/gomega/) internally (both MIT).
 
-### License
+## License
 MIT (see LICENSE).
