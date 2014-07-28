@@ -2,8 +2,9 @@ package bdd
 
 import (
 	"fmt"
-	"github.com/onsi/gomega/format"
 	"time"
+
+	"github.com/onsi/gomega/format"
 )
 
 // IsSameTimeAs succeeds if actual is the same time or later

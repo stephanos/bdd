@@ -2,9 +2,10 @@ package bdd
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/onsi/gomega"
 	"github.com/onsi/gomega/format"
-	"strings"
 )
 
 // HasSubstr succeeds if actual is a string or stringer that contains the

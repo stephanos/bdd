@@ -2,9 +2,10 @@ package bdd
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/onsi/gomega"
 	"github.com/onsi/gomega/format"
-	"strings"
 )
 
 type panicMatcher struct {
