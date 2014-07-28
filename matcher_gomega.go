@@ -1,6 +1,6 @@
 package bdd
 
-import "github.com/onsi/gomega"
+import "github.com/onsi/gomega/types"
 
 // gomegaMatcher wraps a Result into the gomega.OmegaMatcher interface.
 // This way it can easily be passed to Gomega for evaluation.
@@ -8,7 +8,7 @@ type gomegaMatcher struct {
 	r Result
 }
 
-func newGomegaMatcher(result Result) gomega.OmegaMatcher {
+func newGomegaMatcher(result Result) types.GomegaMatcher {
 	return &gomegaMatcher{result}
 }
 
@@ -24,7 +24,7 @@ func (m *gomegaMatcher) NegatedFailureMessage(_ interface{}) string {
 	return m.r.NegatedFailureMessage
 }
 
-func resultFromGomega(matcher gomega.OmegaMatcher, obtained interface{}) Result {
+func resultFromGomega(matcher types.GomegaMatcher, obtained interface{}) Result {
 	success, err := matcher.Match(obtained)
 	return Result{success, err, matcher.FailureMessage(obtained), matcher.NegatedFailureMessage(obtained)}
 }

@@ -3,10 +3,11 @@ package bdd
 import (
 	"github.com/onsi/ginkgo"
 	"github.com/onsi/gomega"
+	"github.com/onsi/gomega/types"
 	"testing"
 )
 
-var globalFailHandler gomega.OmegaFailHandler
+var globalFailHandler types.GomegaFailHandler
 
 // RunSpecs is the entry point for the test runner.
 // You must call this within a Golang testing TestX(t *testing.T) function.
