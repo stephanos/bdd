@@ -2,32 +2,33 @@ package bdd
 
 import "testing"
 
-var testmap = map[string]int{"A": 1, "B": 2}
+var testmap1 = map[string]int{"A": 1}
+var testmap2 = map[string]int{"A": 1, "B": 2}
 
 var mapMatcherTests = []matcherTest{
 	// HasKey
 	{
-		result(testmap, HasKey, "A"),
+		result(testmap2, HasKey, "A"),
 		Result{Success: true},
 	},
 	{
-		result(testmap, HasKey, 1),
+		result(testmap1, HasKey, "C"),
 		Result{
-			FailureMessage:        "Expected <map[string]int | len:2>: {\"A\": 1, \"B\": 2} to have key <int>: 1",
-			NegatedFailureMessage: "Expected <map[string]int | len:2>: {\"A\": 1, \"B\": 2} not to have key <int>: 1",
+			FailureMessage:        "Expected <map[string]int | len:1>: {\"A\": 1} to have key <string>: C",
+			NegatedFailureMessage: "Expected <map[string]int | len:1>: {\"A\": 1} not to have key <string>: C",
 		},
 	},
 
 	// HasKeys
 	{
-		result(testmap, HasKeys, "A", "B"),
+		result(testmap2, HasKeys, "A", "B"),
 		Result{Success: true},
 	},
 	{
-		result(testmap, HasKeys, "A", "C"),
+		result(testmap1, HasKeys, "A", "C"),
 		Result{
-			FailureMessage:        "Expected <map[string]int | len:2>: {\"A\": 1, \"B\": 2} to have key <string>: C",
-			NegatedFailureMessage: "Expected <map[string]int | len:2>: {\"A\": 1, \"B\": 2} not to have key <string>: C",
+			FailureMessage:        "Expected <map[string]int | len:1>: {\"A\": 1} to have key <string>: C",
+			NegatedFailureMessage: "Expected <map[string]int | len:1>: {\"A\": 1} not to have key <string>: C",
 		},
 	},
 }

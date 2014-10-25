@@ -14,7 +14,7 @@ var collMatcherTests = []matcherTest{
 		Result{Success: true},
 	},
 	{
-		result(testmap, HasLen, 2),
+		result(testmap2, HasLen, 2),
 		Result{Success: true},
 	},
 	{
@@ -60,7 +60,7 @@ var collMatcherTests = []matcherTest{
 		Result{Success: true},
 	},
 	{
-		result(testmap, HasElem, 1),
+		result(testmap2, HasElem, 1),
 		Result{Success: true},
 	},
 	{
@@ -77,7 +77,7 @@ var collMatcherTests = []matcherTest{
 		Result{Success: true},
 	},
 	{
-		result(testmap, HasElems, 1, 2),
+		result(testmap2, HasElems, 1, 2),
 		Result{Success: true},
 	},
 	{
@@ -98,7 +98,7 @@ var collMatcherTests = []matcherTest{
 		Result{Success: true},
 	},
 	{
-		result(testmap, Contains, 1, 2),
+		result(testmap2, Contains, 1, 2),
 		Result{Success: true},
 	},
 	{
