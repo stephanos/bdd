@@ -31,7 +31,6 @@ var IsEquivalentTo = &matcher{
 
 // IsNil succeeds if actual is nil
 var IsNil = &matcher{
-
 	name: "IsNil",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		return resultFromGomega(gomega.BeNil(), actual)
@@ -43,7 +42,6 @@ var NotNil = Not(IsNil)
 
 // IsTrue succeeds if actual is true
 var IsTrue = &matcher{
-
 	name: "IsTrue",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		return resultFromGomega(gomega.BeTrue(), actual)
@@ -52,7 +50,6 @@ var IsTrue = &matcher{
 
 // IsFalse succeeds if actual is false
 var IsFalse = &matcher{
-
 	name: "IsFalse",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		return resultFromGomega(gomega.BeFalse(), actual)
@@ -61,7 +58,6 @@ var IsFalse = &matcher{
 
 // IsZero succeeds if actual is the zero value for its type or if actual is nil.
 var IsZero = &matcher{
-
 	name: "IsZero",
 	apply: func(actual interface{}, expected []interface{}) Result {
 		return resultFromGomega(gomega.BeZero(), actual)

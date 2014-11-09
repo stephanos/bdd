@@ -67,3 +67,35 @@ func (m *matcher) MaxArgs() int {
 func (m *matcher) Apply(obtained interface{}, args []interface{}) Result {
 	return m.apply(obtained, args)
 }
+
+type MatcherBuilder struct {
+	m *matcher
+}
+
+func NewMatcherBuilder() *MatcherBuilder {
+	return &MatcherBuilder{&matcher{}}
+}
+
+func (mb *MatcherBuilder) SetName(name string) *MatcherBuilder {
+	mb.m.name = name
+	return mb
+}
+
+func (mb *MatcherBuilder) SetMaxArgs(max int) *MatcherBuilder {
+	mb.m.maxArgs = max
+	return mb
+}
+
+func (mb *MatcherBuilder) SetMinArgs(min int) *MatcherBuilder {
+	mb.m.minArgs = min
+	return mb
+}
+
+func (mb *MatcherBuilder) SetApply(apply func(obtained interface{}, args []interface{}) Result) *MatcherBuilder {
+	mb.m.apply = apply
+	return mb
+}
+
+func (mb *MatcherBuilder) Build() Matcher {
+	return mb.m
+}
