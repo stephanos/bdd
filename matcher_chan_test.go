@@ -10,25 +10,23 @@ import (
 var openChan = make(chan bool)
 var closedChan = make(chan bool)
 
-var chanMatcherTests = []matcherTest{
-	// IsClosed
-	{
-		result(openChan, IsClosed),
-		Result{
-			FailureMessage:        closedMessageFor(openChan, "closed"),
-			NegatedFailureMessage: closedMessageFor(openChan, "open"),
-		},
-	},
-	{
-		result(closedChan, IsClosed),
-		Result{Success: true},
-	},
-}
-
 func Test_Chan(t *testing.T) {
 	close(closedChan)
 
-	testMatchers(t, chanMatcherTests)
+	testMatchers(t, []matcherTest{
+		// IsClosed
+		{
+			result(closedChan, IsClosed),
+			Result{Success: true},
+		},
+		{
+			result(openChan, IsClosed),
+			Result{
+				FailureMessage:        closedMessageFor(openChan, "closed"),
+				NegatedFailureMessage: closedMessageFor(openChan, "open"),
+			},
+		},
+	})
 }
 
 func closedMessageFor(c chan bool, s string) string {
